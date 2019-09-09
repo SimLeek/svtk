@@ -284,15 +284,13 @@ class VTKAnimationTimerCallback(object):
             np_point_data = points
 
         point_colors = np.asarray(point_colors)
-        if point_colors.shape==(3,):
+        if point_colors.shape == (3,):
             point_colors = np.expand_dims(point_colors, axis=0)
         if len(point_colors) == 1:
             points = np.array(points)
             point_colors = np.tile(point_colors, (points.shape[0], 1))
 
-
         np_point_color_data = np.append(np_point_color_data, point_colors, axis=0)
-
 
         vtk_point_data = numpy_support.numpy_to_vtk(num_array=np_point_data, deep=True, array_type=vtk.VTK_FLOAT)
 
