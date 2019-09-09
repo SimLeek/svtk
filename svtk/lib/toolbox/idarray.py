@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class IdArray(object):
     # todo: use this to expand: people.idsia.ch
     """A class used for sorting memory location for single point inserts.
@@ -18,10 +19,20 @@ class IdArray(object):
         Prints out a string representation of this class and its variables, used with print function.
         This is helpful for figuring out how this class works, as well as testing.
         """
-        str_out = "IdArray:\n"+\
-        "\tPointer array:\t"+("\n\t\t" if len(self.pointers)>8 else "")+str(self.pointers)+"\n"+\
-        "\tFree array locations:\t"+("\n\t\t" if len(self.free_pointers)>12 else "")+str(self.free_pointers)+"\n"+\
-        "\tLast largest ID:\t"+str(self.last_largest_id)+"\n"
+        str_out = (
+            "IdArray:\n"
+            + "\tPointer array:\t"
+            + ("\n\t\t" if len(self.pointers) > 8 else "")
+            + str(self.pointers)
+            + "\n"
+            + "\tFree array locations:\t"
+            + ("\n\t\t" if len(self.free_pointers) > 12 else "")
+            + str(self.free_pointers)
+            + "\n"
+            + "\tLast largest ID:\t"
+            + str(self.last_largest_id)
+            + "\n"
+        )
         return str_out
 
     def __len__(self):
@@ -35,8 +46,8 @@ class IdArray(object):
             for i in range(len(locations)):
                 self.add_id(locations[i])
 
-    def add_id(self, location = -1):
-        if location==-1:
+    def add_id(self, location=-1):
+        if location == -1:
             location = self.last_largest_id + 1
             self.last_largest_id = location
         elif location > self.last_largest_id:
@@ -47,23 +58,23 @@ class IdArray(object):
             self.pointers[id] = location
         else:
             id = len(self.pointers)
-            self.pointers = np.append(self.pointers,[location])
+            self.pointers = np.append(self.pointers, [location])
 
         return id
 
     def del_id(self, id):
-        assert(id not in self.free_pointers)
-        assert(id < len(self.pointers))
+        assert id not in self.free_pointers
+        assert id < len(self.pointers)
 
         val = self.pointers[id]
         self.pointers[id] = -1
         self.free_pointers.add(id)
 
-        self.pointers = np.where(self.pointers > val, self.pointers-1, self.pointers)
-        self.last_largest_id-=1
+        self.pointers = np.where(self.pointers > val, self.pointers - 1, self.pointers)
+        self.last_largest_id -= 1
 
     def pop_id(self, id):
-        assert(id not in self.free_pointers)
+        assert id not in self.free_pointers
         if id >= len(self.pointers):
             return None
 
@@ -71,7 +82,7 @@ class IdArray(object):
         self.pointers[id] = -1
         self.free_pointers.add(id)
 
-        self.pointers = np.where(self.pointers > val, self.pointers-1, self.pointers)
-        self.last_largest_id = max(self.last_largest_id-1, -1)
+        self.pointers = np.where(self.pointers > val, self.pointers - 1, self.pointers)
+        self.last_largest_id = max(self.last_largest_id - 1, -1)
 
         return val

@@ -1,10 +1,11 @@
 import vtk
-from lib.input_util.global_util.key_combinations import GlobalKeyCombinationDictionary as KeyComboClass
+from svtk.lib.input_util.global_util.key_combinations import GlobalKeyCombinationDictionary as KeyComboClass
 
 global_interactor_parent = None
 
 global_camera = None
 global_camera_renderWindow = None
+
 
 class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyComboClass):
     def __init__(self, camera, render_window, parent=None):
@@ -31,14 +32,16 @@ class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyCombo
         #   http://www.vtk.org/Wiki/VTK/Examples/Python/Screenshot
         #   http://doc.qt.io/qt-4.8/qpixmap.html#grabWindow
         # todo: add window record function if ffmpeg is installed
-        self.append_input_combinations({
-            'w': self._move_forward,
-            's': self._move_backward,
-            'a': self._yaw_left,
-            'd': self._yaw_right,
-            'Shift_L': self._pitch_up,
-            'space': self._pitch_down
-        })
+        self.append_input_combinations(
+            {
+                "w": self._move_forward,
+                "s": self._move_backward,
+                "a": self._yaw_left,
+                "d": self._yaw_right,
+                "Shift_L": self._pitch_up,
+                "space": self._pitch_down,
+            }
+        )
 
         self.AddObserver("KeyPressEvent", self.keyPress)
         self.AddObserver("KeyReleaseEvent", self.keyRelease)
@@ -55,30 +58,21 @@ class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyCombo
     def dummy_func_2(self, obj, ev):
         pass
 
-
     def _move_forward(self):
         # todo: change this to a velocity function with drag and let something else
         # interpolate the velocity over time
         norm = global_camera.GetViewPlaneNormal()
         pos = global_camera.GetPosition()
-        global_camera.SetPosition(pos[0] - norm[0] * 10,
-                                  pos[1] - norm[1] * 10,
-                                  pos[2] - norm[2] * 10)
-        global_camera.SetFocalPoint(pos[0] - norm[0] * 20,
-                                    pos[1] - norm[1] * 20,
-                                    pos[2] - norm[2] * 20)
+        global_camera.SetPosition(pos[0] - norm[0] * 10, pos[1] - norm[1] * 10, pos[2] - norm[2] * 10)
+        global_camera.SetFocalPoint(pos[0] - norm[0] * 20, pos[1] - norm[1] * 20, pos[2] - norm[2] * 20)
 
     def _move_backward(self):
         # todo: change this to a velocity function with drag and let something else
         # interpolate the velocity over time
         norm = global_camera.GetViewPlaneNormal()
         pos = global_camera.GetPosition()
-        global_camera.SetPosition(pos[0] + norm[0] * 10,
-                                  pos[1] + norm[1] * 10,
-                                  pos[2] + norm[2] * 10)
-        global_camera.SetFocalPoint(pos[0] - norm[0] * 20,
-                                    pos[1] - norm[1] * 20,
-                                    pos[2] - norm[2] * 20)
+        global_camera.SetPosition(pos[0] + norm[0] * 10, pos[1] + norm[1] * 10, pos[2] + norm[2] * 10)
+        global_camera.SetFocalPoint(pos[0] - norm[0] * 20, pos[1] - norm[1] * 20, pos[2] - norm[2] * 20)
 
     def _yaw_right(self):
         global_camera.Yaw(-10)

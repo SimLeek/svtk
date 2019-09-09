@@ -1,4 +1,5 @@
 # SVTK
 
-Streaming vtk.
+I added streaming capabilities to Visualization ToolKit.
+
 

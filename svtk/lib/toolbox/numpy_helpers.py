@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def normalize(a, axis=-1, order=2):
     # from: http://stackoverflow.com/a/21032099
     l2 = np.atleast_1d(np.linalg.norm(a, order, axis))

@@ -1,0 +1,33 @@
+language: python
+dist: xenial
+sudo: true
+
+stages:
+  - lint
+
+cache: pip
+python:
+  - '3.5'
+  - '3.6'
+  - '3.7'
+
+jobs:
+  include:
+    - stage: lint
+      install:
+        - pip install pre-commit
+        - pre-commit install-hooks
+      script:
+        - pre-commit run --all-files
+
+install:
+  - pip install --upgrade pip
+  - pip install poetry
+script:
+  - poetry config http-basic.pypi $PYPI_USER $PYPI_PASS
+  - poetry build
+
+deploy:
+  provider: script
+  script: poetry publish
+  skip_existing: true

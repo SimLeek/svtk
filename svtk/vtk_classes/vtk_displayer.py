@@ -1,8 +1,6 @@
 import vtk
-from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
-from vtk_animation_timer_callback import VTKAnimationTimerCallback
-from vtk_keypress_interactor_style import VTKKeyPressInteractorStyle
+from svtk.vtk_classes.vtk_keypress_interactor_style import VTKKeyPressInteractorStyle
 
 
 class VTKDisplayer:
@@ -22,14 +20,28 @@ class VTKDisplayer:
         self.line_colors.SetNumberOfComponents(3)
         self.line_colors.SetName("Colors")
 
-        assert issubclass(callback_class, VTKAnimationTimerCallback)
+        # assert issubclass(callback_class, VTKAnimationTimerCallback)
         self.callback_class = callback_class
         self.callback_class_args = args
         self.callback_class_kwargs = kwargs
+        self.callback_instance = self.callback_class(*self.callback_class_args, **self.callback_class_kwargs)
 
-        self._set_poly_data()
+        if "point_size" in kwargs.keys():
+            self.point_size = kwargs["point_size"]
+        else:
+            self.point_size = 6
 
-    def _set_poly_data(self):
+        self.set_poly_data()
+
+        self.callback_instance.points = self.points
+        self.callback_instance.point_vertices = self.vertices
+        self.callback_instance.points_poly = self.points_poly
+        self.callback_instance.point_colors = self.point_colors
+        self.callback_instance.lines = self.lines
+        self.callback_instance.lines_poly = self.lines_poly
+        self.callback_instance.line_colors = self.line_colors
+
+    def set_poly_data(self):
 
         self.points_poly = vtk.vtkPolyData()
         self.points_poly.SetPoints(self.points)
@@ -58,7 +70,7 @@ class VTKDisplayer:
 
         point_actor.SetMapper(point_mapper)
         line_actor.SetMapper(line_mapper)
-        point_actor.GetProperty().SetPointSize(60)  # todo:allow modification
+        point_actor.GetProperty().SetPointSize(self.point_size)
         # actor.GetProperty().SetPointColor
 
         renderer = vtk.vtkRenderer()
@@ -66,12 +78,10 @@ class VTKDisplayer:
         render_window = vtk.vtkRenderWindow()
         render_window.AddRenderer(renderer)
         render_window_interactor = vtk.vtkRenderWindowInteractor()
-        interactor_style = VTKKeyPressInteractorStyle(camera=renderer.GetActiveCamera(),
-                                                      render_window=render_window,
-                                                      parent=render_window_interactor)
-        render_window_interactor.SetInteractorStyle(
-            interactor_style
+        interactor_style = VTKKeyPressInteractorStyle(
+            camera=renderer.GetActiveCamera(), render_window=render_window, parent=render_window_interactor
         )
+        render_window_interactor.SetInteractorStyle(interactor_style)
 
         render_window_interactor.SetRenderWindow(render_window)
 
@@ -91,20 +101,13 @@ class VTKDisplayer:
 
         render_window_interactor.Initialize()
 
-        cb = self.callback_class(*self.callback_class_args, **self.callback_class_kwargs)
-        cb.interactor_style = interactor_style  # allows adding/removing input functions
-        cb.renderer = renderer
-        cb.points = self.points
-        cb.point_vertices = self.vertices
-        cb.points_poly = self.points_poly
-        cb.point_colors = self.point_colors
-        cb.lines = self.lines
-        cb.lines_poly = self.lines_poly
-        cb.line_colors = self.line_colors
+        self.callback_instance.interactor_style = interactor_style  # allows adding/removing input functions
+        self.callback_instance.renderer = renderer
 
-        render_window_interactor.AddObserver('TimerEvent', cb.execute)
+
+        render_window_interactor.AddObserver("TimerEvent", self.callback_instance.execute)
         timer_id = render_window_interactor.CreateRepeatingTimer(10)
         render_window_interactor.Start()
 
         # cleanup after loop
-        cb.at_end()
+        self.callback_instance.at_end()

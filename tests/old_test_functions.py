@@ -1,7 +1,9 @@
 import random
+
 import numpy as np
-from vtk_classes.vtk_animation_timer_callback import VTKAnimationTimerCallback
-from vtk_classes.vtk_displayer import VTKDisplayer
+
+from svtk.vtk_classes.vtk_animation_timer_callback import VTKAnimationTimerCallback
+from svtk.vtk_classes.vtk_displayer import VTKDisplayer
 
 
 def show_landscape(point_displayer):
@@ -16,17 +18,17 @@ def show_landscape(point_displayer):
         x = random.randint(0, 1000, 4237842 + i)
         y = random.randint(0, 1000, 5437474 + i)
 
-        r1 = .0009765625 * (simplex_g.noise2d(x=x, y=y))
-        r2 = .001953125 * (simplex_r.noise2d(x=x / 2.0, y=y / 2.0))
-        r3 = .00390625 * (simplex_b.noise2d(x=x / 4.0, y=y / 4.0, ))
-        r4 = .0078125 * (simplex_g.noise2d(x=x / 8.0, y=y / 8.0))
-        r5 = .015625 * (simplex_r.noise2d(x=x / 16.0, y=y / 16.0))
-        r6 = .03125 * (simplex_b.noise2d(x=x / 32.0, y=y / 32.0))
-        r7 = .0625 * (simplex_g.noise2d(x=x / 64.0, y=y / 64.0))
-        r8 = .125 * (simplex_r.noise2d(x=x / 128.0, y=y / 128.0))
-        r9 = .25 * (simplex_b.noise2d(x=x / 256.0, y=y / 256.0))
-        normalization_factor = .5
-        val = ((r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 + r9) / 2.0)
+        r1 = 0.0009765625 * (simplex_g.noise2d(x=x, y=y))
+        r2 = 0.001953125 * (simplex_r.noise2d(x=x / 2.0, y=y / 2.0))
+        r3 = 0.00390625 * (simplex_b.noise2d(x=x / 4.0, y=y / 4.0))
+        r4 = 0.0078125 * (simplex_g.noise2d(x=x / 8.0, y=y / 8.0))
+        r5 = 0.015625 * (simplex_r.noise2d(x=x / 16.0, y=y / 16.0))
+        r6 = 0.03125 * (simplex_b.noise2d(x=x / 32.0, y=y / 32.0))
+        r7 = 0.0625 * (simplex_g.noise2d(x=x / 64.0, y=y / 64.0))
+        r8 = 0.125 * (simplex_r.noise2d(x=x / 128.0, y=y / 128.0))
+        r9 = 0.25 * (simplex_b.noise2d(x=x / 256.0, y=y / 256.0))
+        normalization_factor = 0.5
+        val = (r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 + r9) / 2.0
         if val > 0:
             p = 1.0
         else:
@@ -55,18 +57,18 @@ def show_cloud(point_displayer):
 
         d = math.sqrt((x - 500) ** 2 + (y - 500) ** 2 + (z - 500) ** 2) / 500.0
 
-        r1 = .0009765625 * (simplex_g.noise3d(x=x, y=y, z=z))
-        r2 = .001953125 * (simplex_r.noise3d(x=x / 2.0, y=y / 2.0, z=z / 2.0))
-        r3 = .00390625 * (simplex_b.noise3d(x=x / 4.0, y=y / 4.0, z=z / 4.0))
-        r4 = .0078125 * (simplex_g.noise3d(x=x / 8.0, y=y / 8.0, z=z / 8.0))
-        r5 = .015625 * (simplex_r.noise3d(x=x / 16.0, y=y / 16.0, z=z / 16.0))
-        r6 = .03125 * (simplex_b.noise3d(x=x / 32.0, y=y / 32.0, z=z / 32.0))
-        r7 = .0625 * (simplex_g.noise3d(x=x / 64.0, y=y / 64.0, z=z / 64.0))
-        r8 = .125 * (simplex_r.noise3d(x=x / 128.0, y=y / 128.0, z=z / 128.0))
-        r9 = .25 * (simplex_b.noise3d(x=x / 256.0, y=y / 256.0, z=z / 256.0))
-        r10 = .5 * (simplex_g.noise3d(x=x / 512.0, y=y / 512.0, z=z / 512.0))
-        r11 = (simplex_r.noise3d(x=x / 1024.0, y=y / 1024.0, z=z / 1024.0))
-        val = ((r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 + r9) / 2.0)
+        r1 = 0.0009765625 * (simplex_g.noise3d(x=x, y=y, z=z))
+        r2 = 0.001953125 * (simplex_r.noise3d(x=x / 2.0, y=y / 2.0, z=z / 2.0))
+        r3 = 0.00390625 * (simplex_b.noise3d(x=x / 4.0, y=y / 4.0, z=z / 4.0))
+        r4 = 0.0078125 * (simplex_g.noise3d(x=x / 8.0, y=y / 8.0, z=z / 8.0))
+        r5 = 0.015625 * (simplex_r.noise3d(x=x / 16.0, y=y / 16.0, z=z / 16.0))
+        r6 = 0.03125 * (simplex_b.noise3d(x=x / 32.0, y=y / 32.0, z=z / 32.0))
+        r7 = 0.0625 * (simplex_g.noise3d(x=x / 64.0, y=y / 64.0, z=z / 64.0))
+        r8 = 0.125 * (simplex_r.noise3d(x=x / 128.0, y=y / 128.0, z=z / 128.0))
+        r9 = 0.25 * (simplex_b.noise3d(x=x / 256.0, y=y / 256.0, z=z / 256.0))
+        r10 = 0.5 * (simplex_g.noise3d(x=x / 512.0, y=y / 512.0, z=z / 512.0))
+        r11 = simplex_r.noise3d(x=x / 1024.0, y=y / 1024.0, z=z / 1024.0)
+        val = (r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 + r9) / 2.0
         if val > 0:
             p = 1.0
         else:
@@ -83,7 +85,7 @@ def show_cloud(point_displayer):
         # r5 = int((r5)*255.0/2.0)
         # lim octaves->inf gives 1/2^x sum (=1)
         if r > 160:
-            point_displayer.add_point([x, y, z], [r, r, r])
+            point_displayer.callback_instance.add_points([[x, y, z]], [[r, r, r]])
 
 
 def show_rand_line_cube(point_displayer):
@@ -108,10 +110,10 @@ class PointLineTester(VTKAnimationTimerCallback):
         rand_points = [2, random.randint(0, 40 * 40 * 2 - 1), random.randint(0, 40 * 40 * 2 - 1)]
 
         if len(self.line_id_array) > 0 and random.randint(0, 10) < 9:
-            self.del_lines(0)
+            self.del_lines([0])
         self.add_lines(rand_points, [128, 99, 21])
 
-        self.add_points([[random.randint(-50,50),random.randint(-50,50),random.randint(-50,50)]],[[0,0,0]])
+        self.add_points([[random.randint(-50, 50), random.randint(-50, 50), random.randint(-50, 50)]], [[0, 0, 0]])
 
         if random.randint(0, 40) == 1:
             self.del_all_lines()
@@ -124,11 +126,13 @@ class PointLineTester(VTKAnimationTimerCallback):
         self.set_point_colors(rand_colors, rand_points)
 
 
-def display_test_point_loop():
+def point_loop():
     point_displayer = VTKDisplayer(PointLineTester)
-    add_array(point_displayer, [40, 40, 2], [0, 1, 0], [0, 1, 0], [int(128), int(66), int(21)])
+    point_displayer.callback_instance.add_point_field([40, 40, 2], [0, 1, 0], [0, 1, 0], [int(128), int(66), int(21)])
     point_displayer.set_poly_data()
     point_displayer.visualize()
 
-if __name__ == '__main__':
-    display_test_point_loop()
+if __name__=='__main__':
+    d = VTKDisplayer(PointLineTester)
+    test_show_cloud(d)
+    d.visualize()

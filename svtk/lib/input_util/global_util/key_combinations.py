@@ -5,7 +5,7 @@ global_keys_down = None
 class GlobalKeyCombinationDictionary:
     def __init__(self):
         global global_keyDic
-        global_keyDic = {'RECALC': self.recalc_key_combination_dictionary}
+        global_keyDic = {"RECALC": self.recalc_key_combination_dictionary}
         global global_keys_down
         global_keys_down = []
 
@@ -41,7 +41,7 @@ class GlobalKeyCombinationDictionary:
     def key_down(self, key):
         if key not in global_keys_down:
             global_keys_down.append(key)
-            global_keyDic['RECALC']()
+            global_keyDic["RECALC"]()
 
     def key_up(self, key):
         global_keys_down.remove(key)
