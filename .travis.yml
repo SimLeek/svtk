@@ -30,3 +30,4 @@ deploy:
   provider: script
   script: poetry publish
   skip_existing: true
+  skip_cleanup: true

@@ -28,7 +28,7 @@ exclude = '''
 name = "svtk"
 version = "0.1.0"
 description = "Streaming Visualization Toolkit"
-authors = ["Your Name <you@example.com>"]
+authors = ["SimLeek <simulator.leek@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
