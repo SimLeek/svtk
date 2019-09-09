@@ -5,8 +5,6 @@ sudo: true
 stages:
   - lint
   - install
-  - script
-  - deploy
 
 cache: pip
 
