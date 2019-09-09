@@ -34,3 +34,6 @@ jobs:
         script: poetry publish
         skip_existing: true
         skip_cleanup: true
+
+script:
+  - echo "Skipping non-jobs"
