@@ -9,12 +9,12 @@ stages:
   - deploy
 
 cache: pip
-python:
-  - '3.6'
-  - '3.7'
 
 jobs:
   include:
+    - python:
+        - '3.6'
+        - '3.7'
     - stage: lint
       install:
         - pip install pre-commit
