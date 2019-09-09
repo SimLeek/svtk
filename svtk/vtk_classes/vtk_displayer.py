@@ -104,7 +104,6 @@ class VTKDisplayer:
         self.callback_instance.interactor_style = interactor_style  # allows adding/removing input functions
         self.callback_instance.renderer = renderer
 
-
         render_window_interactor.AddObserver("TimerEvent", self.callback_instance.execute)
         timer_id = render_window_interactor.CreateRepeatingTimer(10)
         render_window_interactor.Start()

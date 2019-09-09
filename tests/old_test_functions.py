@@ -132,7 +132,8 @@ def point_loop():
     point_displayer.set_poly_data()
     point_displayer.visualize()
 
-if __name__=='__main__':
+
+if __name__ == "__main__":
     d = VTKDisplayer(PointLineTester)
     test_show_cloud(d)
     d.visualize()
