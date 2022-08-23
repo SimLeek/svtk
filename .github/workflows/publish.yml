@@ -16,6 +16,7 @@ jobs:
       - uses: snok/install-poetry@v1.3.1
       - name: Install and build
         run: |
+             python -m pip install wheel
              python -m ensurepip --user
              python -m pip install --upgrade pip --user
              python -m pip install .[dev]
