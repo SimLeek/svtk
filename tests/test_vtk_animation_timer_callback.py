@@ -2,6 +2,9 @@ from svtk.vtk_classes.vtk_animation_timer_callback import VTKAnimationTimerCallb
 from svtk.vtk_classes.vtk_displayer import VTKDisplayer
 import unittest
 import random
+from threading import Thread
+from threading import Lock
+import time
 
 # 20 seconds is the approximate amount of time it would take to use up the extra memory and crash
 test_time = 5
@@ -36,6 +39,70 @@ class TestAnimationTimerCallback(unittest.TestCase):
         point_displayer = VTKDisplayer(PointAddTester)
         point_displayer.visualize()
 
+    def test_point_add_thread(self):
+        on = True
+
+        def loop_add_points(cls):
+            while on:
+                cls.add_points(
+                    [[random.randint(-50, 50), random.randint(-50, 50), random.randint(-50, 50)]],
+                    [[random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]],
+                )
+
+        point_displayer = VTKDisplayer(TimedAnimationTester)
+        t = Thread(target=loop_add_points, args=[point_displayer.callback_instance])
+        t.start()
+        point_displayer.visualize()
+        on = False
+        t.join()
+
+    def test_point_add_get_all(self):
+        # note: doesn't matter. VTK stops all python while the user is interacting, including threads
+        #   points would need to be added from a separate program.
+        points = []
+        point_colors = []
+        num_points = 0
+        on = True
+        l = Lock()
+
+        vtk_num_points = 0
+
+        class PointAddTester(TimedAnimationTester):
+            def loop(self, obj, event):
+                nonlocal points, vtk_num_points, num_points, point_colors, l
+                l.acquire()
+                super(PointAddTester, self).loop(obj, event)
+                self.add_points(
+                    points,
+                    point_colors,
+                )
+                self.fit_points_in_cam()
+                points.clear()
+                point_colors.clear()
+                vtk_num_points = len(self.get_points()[2]) // 2
+                print(f"num pts: {num_points}")
+                print(f"vtk pts: {vtk_num_points}")
+                print(f"Num pts vs vtk pts: {num_points-vtk_num_points}")
+                l.release()
+                time.sleep(0)
+
+        def loop_add_points():
+            nonlocal num_points, points, point_colors, l
+            while on:
+                l.acquire()
+                points.append([random.randint(-50, 50), random.randint(-50, 50), random.randint(-50, 50)])
+                point_colors.append([random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)])
+                num_points += 1
+                l.release()
+                time.sleep(0)
+
+        point_displayer = VTKDisplayer(PointAddTester)
+        t = Thread(target=loop_add_points, args=[])
+        t.start()
+        point_displayer.visualize()
+        on = False
+        t.join()
+
     def test_line_add(self):
         class LineAddTester(TimedAnimationTester):
             def loop(self, obj, event):
@@ -56,7 +123,7 @@ class TestAnimationTimerCallback(unittest.TestCase):
                 pass
 
         line_displayer = VTKDisplayer(LineAddTester)
-        line_displayer.visualize()
+        line_displayer.visualize_ext_gl()
 
     def test_line_del_all(self):
         class LineDelAllTester(TimedAnimationTester):

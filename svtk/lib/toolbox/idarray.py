@@ -74,15 +74,33 @@ class IdArray(object):
         self.last_largest_id -= 1
 
     def pop_id(self, id):
-        assert id not in self.free_pointers
+        if id in self.free_pointers:
+            raise IndexError
         if id >= len(self.pointers):
-            return None
+            raise IndexError
 
         val = self.pointers[id]
         self.pointers[id] = -1
         self.free_pointers.add(id)
 
-        self.pointers = np.where(self.pointers > val, self.pointers - 1, self.pointers)
+        # self.pointers = np.where(self.pointers > val, self.pointers - 1, self.pointers)
         self.last_largest_id = max(self.last_largest_id - 1, -1)
 
         return val
+
+    def pop_ids(self, ids):
+        # if id in self.free_pointers:
+        #    raise IndexError
+        # if id >= len(self.pointers):
+        #    raise IndexError
+        vals = []
+        for i in ids:
+            vals.append(self.pointers[i])
+            self.pointers[i] = -1
+            self.free_pointers.add(i)
+
+        for i in range(len(ids)):
+            self.pointers = np.where(self.pointers > vals[i], self.pointers - 1, self.pointers)
+            self.last_largest_id = max(self.last_largest_id - 1, -1)
+
+        return vals
