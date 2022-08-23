@@ -2,7 +2,7 @@
 
 import math as m
 import numpy as np
-import integer
+import svtk.lib.toolbox.integer as integer
 import numbers
 
 # not actually optimized. Just looks similar to GPU programming, but is for loop.
@@ -32,7 +32,7 @@ def _np_char_to_float(color_val):
     return color_val / 255.0
 
 
-_np_char_to_float = np.vectorize(_np_char_to_float, otypes=[np.float])
+_np_char_to_float = np.vectorize(_np_char_to_float, otypes=[np.float32])
 
 
 def char_to_float(color_val):

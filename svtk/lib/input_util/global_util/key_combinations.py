@@ -44,4 +44,5 @@ class GlobalKeyCombinationDictionary:
             global_keyDic["RECALC"]()
 
     def key_up(self, key):
-        global_keys_down.remove(key)
+        if key in global_keys_down:
+            global_keys_down.remove(key)

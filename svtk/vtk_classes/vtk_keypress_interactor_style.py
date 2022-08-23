@@ -1,5 +1,6 @@
 import vtk
 from svtk.lib.input_util.global_util.key_combinations import GlobalKeyCombinationDictionary as KeyComboClass
+import math
 
 global_interactor_parent = None
 
@@ -13,9 +14,10 @@ class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyCombo
         # should work with else statement, but doesnt for some reason
 
         global global_interactor_parent
-        global_interactor_parent = vtk.vtkRenderWindowInteractor()
         if parent is not None:
             global_interactor_parent = parent
+        else:
+            global_interactor_parent = vtk.vtkRenderWindowInteractor()
 
         # DO NOT REMOVE GLOBAL INSTANTIATIONS!
         # due to problems with vtk losing data when moving python classes through c++, these globals muse be used to pass
@@ -45,6 +47,8 @@ class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyCombo
 
         self.AddObserver("KeyPressEvent", self.keyPress)
         self.AddObserver("KeyReleaseEvent", self.keyRelease)
+        self.AddObserver("ExitEvent", self.exit_event)
+        self.is_exited = False
         # self.RemoveObservers("LeftButtonPressEvent")
         # self.AddObserver("LeftButtonPressEvent", self.dummy_func)
 
@@ -52,11 +56,30 @@ class VTKKeyPressInteractorStyle(vtk.vtkInteractorStyleTrackballCamera, KeyCombo
         # self.RemoveObservers("RightButtonPressEvent")
         # self.AddObserver("RightButtonPressEvent", self.dummy_func_2)
 
+    def camera_for_bounds(self, bounds):
+        #  https://stackoverflow.com/a/28147726
+        viewAngle = math.radians(global_camera.GetViewAngle())
+        # todo: optionally, instead of min/max of xyz, find longest eiganvector of all points and use that. no sqrt(3).
+        min_bounds = min(b[0] for b in bounds)
+        max_bounds = min(b[1] for b in bounds)
+        height = max_bounds - min_bounds
+        d = height / viewAngle
+        d = d * math.sqrt(3)  # ensure we get all points in 3d in view no matter what
+        norm = global_camera.GetViewPlaneNormal()
+        if sum(norm) == 0:
+            norm = (-1.0, 0.0, 0.0)
+        global_camera.SetFocalPoint(0, 0, 0)
+        global_camera.SetPosition(norm[0] * d, norm[1] * d, norm[2] * d)
+
     def dummy_func(self, obj, ev):
         self.OnLeftButtonDown()
 
     def dummy_func_2(self, obj, ev):
         pass
+
+    def exit_event(self):
+        # super(vtk.vtkInteractorStyleTrackballCamera, self).ExitEvent()
+        self.is_exited = True
 
     def _move_forward(self):
         # todo: change this to a velocity function with drag and let something else

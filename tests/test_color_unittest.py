@@ -1,11 +1,11 @@
-import color as c
+import svtk.lib.toolbox.color as c
 import numpy as np
 import unittest
 
 
 class TestColor(unittest.TestCase):
     """A clamping function is usually simple enough that it shouldn't need testing, but it could be extended to different
-     number types later."""
+    number types later."""
 
     def test_float_to_char(self):
         seq1 = [178, 255, 51, 127]

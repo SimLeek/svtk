@@ -1,4 +1,4 @@
-import numpy_helpers as h
+import svtk.lib.toolbox.numpy_helpers as h
 import numpy as np
 import unittest
 
