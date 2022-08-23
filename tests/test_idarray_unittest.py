@@ -1,4 +1,4 @@
-from idarray import IdArray
+from svtk.lib.toolbox.idarray import IdArray
 import unittest
 
 

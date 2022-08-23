@@ -1,4 +1,4 @@
-import color as c
+import svtk.lib.toolbox.color as c
 import numpy as np
 import unittest
 

@@ -139,7 +139,7 @@ class VTKDisplayer:
     def visualize_ext_gl(self):
         expl = """
         Visualizing vtk in an external UI is possible, but would require a few weeks of work.
-        You may need to override GetGenericDisplayId (otherwise how tf does vtk use the context?)
+        You may need to override GetGenericDisplayId (otherwise how does vtk use the context?)
             You can see it done in the SDL2 implementation: https://gitlab.kitware.com/vtk/vtk/-/blob/master/Rendering/OpenGL2/vtkSDL2OpenGLRenderWindow.cxx
         you could provide an example external context for tkinter with pyopengltk: https://github.com/jonwright/pyopengltk
             The context there would be self.__context, which you may need to return from GetGenericDisplayId: https://github.com/jonwright/pyopengltk/blob/2df4fca4da54923f5dbfaa49c084e4857f2d6f67/pyopengltk/win32.py

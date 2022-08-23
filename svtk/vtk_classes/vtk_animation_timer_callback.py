@@ -530,11 +530,10 @@ class VTKAnimationTimerCallback(object):
         np_point_data = numpy_support.vtk_to_numpy(self.points.GetData())
         vtk_point_data = numpy_support.numpy_to_vtk(num_array=np_point_data, deep=True, array_type=vtk.VTK_FLOAT)
 
-        #np_point_color_data = numpy_support.vtk_to_numpy(self.point_colors)
-        #np_vert_data = numpy_support.vtk_to_numpy(self.point_vertices.GetData())
+        # np_point_color_data = numpy_support.vtk_to_numpy(self.point_colors)
+        # np_vert_data = numpy_support.vtk_to_numpy(self.point_vertices.GetData())
 
         self.points.SetData(vtk_point_data)
-
 
         self.points_poly.Modified()
 

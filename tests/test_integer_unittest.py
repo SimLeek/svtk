@@ -1,4 +1,4 @@
-import integer as b
+import svtk.lib.toolbox.integer as b
 import unittest
 
 

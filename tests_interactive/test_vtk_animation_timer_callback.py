@@ -123,7 +123,7 @@ class TestAnimationTimerCallback(unittest.TestCase):
                 pass
 
         line_displayer = VTKDisplayer(LineAddTester)
-        line_displayer.visualize_ext_gl()
+        line_displayer.visualize()
 
     def test_line_del_all(self):
         class LineDelAllTester(TimedAnimationTester):

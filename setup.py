@@ -39,9 +39,6 @@ setup(
         "numpy",
     ],
     extras_require={
-        # pypi doesn't allow direct dependencies for security reasons,
-        # even though I could install a lot of viruses just from this setup.py
-        # "linux": ["PyV4L2Cam @ git+https://github.com/SimLeek/PyV4L2Cam"],
-        "dev": ["black"],
+        "dev": ["black", "tox", "coverage", "pytest", "pydocstyle", "mypy"],
     },
 )
